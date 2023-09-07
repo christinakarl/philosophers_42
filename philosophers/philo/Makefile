@@ -6,7 +6,7 @@
 #    By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 12:26:41 by ckarl             #+#    #+#              #
-#    Updated: 2023/09/05 12:46:57 by ckarl            ###   ########.fr        #
+#    Updated: 2023/09/07 15:38:29 by ckarl            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,10 @@ OBJS_PATH	:= objs
 
 	### SOURCE FILES ###
 MAIN_FILE	:= main.c
-UTILS_FILES	:=	init.c	\
+UTILS_FILES	:=	init.c		\
+				helpers.c	\
+				utils.c		\
+				routine.c	\
 
 	### OBJECTS ###
 UTILS_FILES := $(addprefix $(OBJS_PATH)/, $(UTILS_FILES:.c=.o))
