@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:42:37 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/07 16:04:58 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/11 15:31:08 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	init_philos(t_struct *data)
 		data->philo[i].id = i + 1;
 		data->philo[i].meals_nbr = 0;
 		data->philo[i].is_doing = N;
+		data->philo[i].last_meal = get_current_time(data);
+		data->philo[i].data = data;
 		data->philo[i].r_fork = &data->forks[i];
 		if (i == 0)
 			data->philo[i].l_fork = &data->forks[data->total_philo - 1];
@@ -78,22 +80,23 @@ int	run_threads(t_struct *data)
 	int	i;
 
 	i = -1;
+	data->start_time = 0;
 	data->start_time = get_current_time(data);
-	printf("after start time data\n");
-	while (++i < data->total_philo)
+	printf("time at beginning %d \n", data->start_time)
+;	while (++i < data->total_philo)
 	{
 		if (pthread_create(&data->threads[i], NULL, &routine, \
-			(void *)&data->philo[i]) != 0)
+			&data->philo[i]) != 0)
 			return (error_msg(CREATE_ERR, data));
 		// ft_usleep(1, data);
 	}
-	printf("after thread create\n");
 	i = -1;
 	while (++i < data->total_philo)
 	{
 		if (pthread_join(data->threads[i], NULL) != 0)
+		{
 			return (error_msg(JOIN_ERR, data));
+		}
 	}
-		printf("after join threads\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 16:23:41 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/07 15:41:02 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/11 15:36:03 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ int	input_checker(char **argv)
 //get current time in milliseconds
 int	get_current_time(t_struct *data)
 {
-	struct timeval	tv;
+	struct timeval	time;
 
-	if (gettimeofday(&tv, NULL) == 1)
+	if (gettimeofday(&time, NULL) != 0)
 		return (error_msg(TIME_ERR, data));
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	if (data->start_time == 0)
+		data->start_time = time.tv_sec;
+	return (((time.tv_sec) * 1000) + (time.tv_usec / 1000));
 }
 
 //free all assigned memory and destroy mutexes
@@ -81,13 +83,14 @@ void	clear_all(t_struct *data)
 void	print_msg(char *str, t_philo *philo)
 {
 	int	time;
+
 	pthread_mutex_lock(&(philo->data->write_lock));
 	time = get_current_time(philo->data) - philo->data->start_time;
 	if (ft_strcmp(str, DIE) == 0)
 	{
 		pthread_mutex_lock(&(philo->data->stop_lock));
 		philo->data->stop = 1;
-		printf("%d: philospher %d %s\n", time, philo->id, str);
+		printf("%d: Philospher %d %s\n", time, philo->id, str);
 		pthread_mutex_unlock(&(philo->data->stop_lock));
 	}
 	else if (ft_strcmp(str, FINISH) == 0)
@@ -98,6 +101,6 @@ void	print_msg(char *str, t_philo *philo)
 		pthread_mutex_unlock(&(philo->data->stop_lock));
 	}
 	else
-		printf("%d: philospher %d %s\n", time, philo->id, str);
+		printf("%d: Philospher %d %s\n", time, philo->id, str);
 	pthread_mutex_unlock(&(philo->data->write_lock));
 }

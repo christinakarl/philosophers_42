@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:28:55 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/07 15:39:13 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/11 14:18:20 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	philo_eat(t_philo *philo)
 	philo->is_doing = E;
 	philo->last_meal = get_current_time(philo->data);
 	print_msg(EAT, philo);
+	ft_usleep(philo->data->time_to_eat, philo->data);
 	philo->meals_nbr += 1;
 	if (philo->meals_nbr == philo->data->total_meals)
 	{
@@ -34,7 +35,6 @@ void	philo_eat(t_philo *philo)
 		philo->data->finished += 1;
 		pthread_mutex_unlock(&(philo->data->meals_lock));
 	}
-	ft_usleep(philo->data->time_to_eat, philo->data);
 	pthread_mutex_unlock((philo->l_fork));
 	pthread_mutex_unlock((philo->r_fork));
 }
@@ -63,8 +63,11 @@ void	*routine(void *p)
 	philo = (t_philo *)p;
 	while (philo->data->stop == 0)
 	{
+		printf("beginning of loop in routine %d\n", philo->id);
 		if (philo->data->finished == philo->data->total_meals)
+		{
 			print_msg(FINISH, philo);
+		}
 		if ((philo->last_meal + philo->data->time_to_die) \
 			< get_current_time(philo->data) && philo->is_doing != E)
 			print_msg(DIE, philo);
@@ -72,6 +75,17 @@ void	*routine(void *p)
 		philo_sleep(philo);
 		philo_think(philo);
 	}
+	return ((void *)0);
+}
+
+void	*test_routine(void *p)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)p;
+	printf("created philo %d\n", philo->id);
+	while (philo->data->stop ==0)
+		printf("data == 0\n");
 	return ((void *)0);
 }
 
