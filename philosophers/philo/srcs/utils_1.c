@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 16:23:41 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/11 15:36:03 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:33:35 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,6 @@ int	error_msg(char *str, t_struct *data)
 	return (1);
 }
 
-int	input_checker(char **argv)
-{
-	int	i;
-	int	j;
-
-	i = 1;
-	while (argv[i])
-	{
-		j = 0;
-		while (argv[i][j])
-		{
-			if (argv[i][j] < '0' || argv[i][j] > '9' )
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-
 //get current time in milliseconds
 int	get_current_time(t_struct *data)
 {
@@ -50,8 +30,6 @@ int	get_current_time(t_struct *data)
 
 	if (gettimeofday(&time, NULL) != 0)
 		return (error_msg(TIME_ERR, data));
-	if (data->start_time == 0)
-		data->start_time = time.tv_sec;
 	return (((time.tv_sec) * 1000) + (time.tv_usec / 1000));
 }
 
@@ -64,10 +42,7 @@ void	clear_all(t_struct *data)
 	if (data)
 	{
 		while (++i < data->total_philo)
-		{
 			pthread_mutex_destroy(&data->forks[i]);
-			pthread_mutex_destroy(&data->philo[i].lock);
-		}
 		if (data->philo)
 			free(data->philo);
 		if (data->threads)
@@ -86,21 +61,42 @@ void	print_msg(char *str, t_philo *philo)
 
 	pthread_mutex_lock(&(philo->data->write_lock));
 	time = get_current_time(philo->data) - philo->data->start_time;
-	if (ft_strcmp(str, DIE) == 0)
+	if (philo->data->stop == 0)
 	{
-		pthread_mutex_lock(&(philo->data->stop_lock));
-		philo->data->stop = 1;
-		printf("%d: Philospher %d %s\n", time, philo->id, str);
-		pthread_mutex_unlock(&(philo->data->stop_lock));
+		if (ft_strcmp(str, DIE) == 0)
+		{
+			pthread_mutex_lock(&(philo->data->stop_lock));
+			philo->data->stop = 1;
+			printf("%d: Philospher %d %s\n", time, philo->id, str);
+			pthread_mutex_unlock(&(philo->data->stop_lock));
+		}
+		else if (ft_strcmp(str, FINISH) == 0 || \
+				ft_strcmp(str, ONLY_ONE) == 0 )
+		{
+			pthread_mutex_lock(&(philo->data->stop_lock));
+			philo->data->stop = 1;
+			printf("%d: %s\n", time, str);
+			pthread_mutex_unlock(&(philo->data->stop_lock));
+		}
+		else
+			printf("%d: Philospher %d %s\n", time, philo->id, str);
 	}
-	else if (ft_strcmp(str, FINISH) == 0)
-	{
-		pthread_mutex_lock(&(philo->data->stop_lock));
-		philo->data->stop = 1;
-		printf("%d: %s\n", time, str);
-		pthread_mutex_unlock(&(philo->data->stop_lock));
-	}
-	else
-		printf("%d: Philospher %d %s\n", time, philo->id, str);
 	pthread_mutex_unlock(&(philo->data->write_lock));
+}
+
+/*work better for shorter sleeping periods because it reduces
+granularity (minimum sleep time that can be handled effectively, usually
+in milliseconds) and function call overhead (set up & tear down of the
+function)
+>> useconds_t = microseconds = 1000 * milliseconds*/
+int	ft_usleep(int milli_sleep, t_struct *data)
+{
+	int	start;
+
+	if (milli_sleep == 0)
+		return (0);
+	start = get_current_time(data);
+	while ((get_current_time(data) - start) < (milli_sleep))
+		usleep(500);
+	return (0);
 }

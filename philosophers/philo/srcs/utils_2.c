@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:24:06 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/11 14:16:14 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 14:54:40 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,4 @@ int	ft_strcmp(char *str, char *comp)
 		i++;
 	}
 	return (str[i] - comp[i]);
-}
-
-/*work better for shorter sleeping periods because it reduces
-granularity (minimum sleep time that can be handled effectively, usually
-in milliseconds) and function call overhead (set up & tear down of the
-function)
->> useconds_t = microseconds = 1000 * milliseconds*/
-int	ft_usleep(int milli_sleep, t_struct *data)
-{
-	int	start;
-
-	start = get_current_time(data);
-	while ((get_current_time(data) - start) < (milli_sleep * 1000))
-		usleep((milli_sleep * 1000) / 10);
-	return (0);
 }

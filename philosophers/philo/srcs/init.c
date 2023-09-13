@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:42:37 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/11 15:31:08 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:47:59 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	init_data(t_struct *data, int argc, char **argv)
 {
-	if (input_checker(argv) == 1)
-		return (error_msg(INPUT_FORMAT, data));
+	if (check_input(argv) == 1)
+		return (error_msg(INPUT_FORMAT, NULL));
 	data->total_philo = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
@@ -25,7 +25,7 @@ int	init_data(t_struct *data, int argc, char **argv)
 	else
 		data->total_meals = -1;
 	if (data->total_philo <= 0 || data->total_philo > 200)
-		return (error_msg(INPUT_PHILO, data));
+		return (error_msg(INPUT_PHILO, NULL));
 	data->stop = 0;
 	data->finished = 0;
 	pthread_mutex_init(&data->stop_lock, NULL);
@@ -62,7 +62,6 @@ void	init_philos(t_struct *data)
 	{
 		data->philo[i].id = i + 1;
 		data->philo[i].meals_nbr = 0;
-		data->philo[i].is_doing = N;
 		data->philo[i].last_meal = get_current_time(data);
 		data->philo[i].data = data;
 		data->philo[i].r_fork = &data->forks[i];
@@ -70,7 +69,6 @@ void	init_philos(t_struct *data)
 			data->philo[i].l_fork = &data->forks[data->total_philo - 1];
 		else
 			data->philo[i].l_fork = &data->forks[i - 1];
-		pthread_mutex_init(&data->philo[i].lock, NULL);
 	}
 }
 
@@ -80,23 +78,32 @@ int	run_threads(t_struct *data)
 	int	i;
 
 	i = -1;
-	data->start_time = 0;
 	data->start_time = get_current_time(data);
-	printf("time at beginning %d \n", data->start_time)
-;	while (++i < data->total_philo)
+	if (data->total_philo == 1)
+		return(run_one_thread(data));
+	while (++i < data->total_philo)
 	{
 		if (pthread_create(&data->threads[i], NULL, &routine, \
 			&data->philo[i]) != 0)
 			return (error_msg(CREATE_ERR, data));
-		// ft_usleep(1, data);
 	}
 	i = -1;
 	while (++i < data->total_philo)
 	{
 		if (pthread_join(data->threads[i], NULL) != 0)
-		{
 			return (error_msg(JOIN_ERR, data));
-		}
 	}
+	if (data->total_meals == 0)
+		return(error_msg(FINISH_ZERO, data));
+	return (0);
+}
+
+int	run_one_thread(t_struct *data)
+{
+	if (pthread_create(&data->threads[0], NULL, &one_routine, \
+		&data->philo[0]) != 0)
+		return (error_msg(CREATE_ERR, data));
+	if (pthread_join(data->threads[0], NULL) != 0)
+		return (error_msg(JOIN_ERR, data));
 	return (0);
 }
