@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers.c                                          :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 17:24:06 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 14:54:40 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:57:09 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+//print str to right file descriptor
 void	ft_putstr_fd(char *str, int fd)
 {
 	int	i;
@@ -26,6 +27,7 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
+//convert string to int
 int	ft_atoi(const char *str)
 {
 	int	i;
@@ -51,6 +53,7 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
+//compare two strings
 int	ft_strcmp(char *str, char *comp)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 14:51:54 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:15:38 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:58:20 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_if_dead(t_philo *philo)
 	return (0);
 }
 
-//check if all philos finished their meals (if parameter indicated)
+//check if all philos finished their meals (if parameter is indicated)
 int	check_if_all_finished(t_philo *philo)
 {
 	if (philo->data->total_meals < 0)

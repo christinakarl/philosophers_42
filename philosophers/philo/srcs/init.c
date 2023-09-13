@@ -6,12 +6,13 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:42:37 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:47:59 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:54:26 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+//init general data structure with the given argv parameters
 int	init_data(t_struct *data, int argc, char **argv)
 {
 	if (check_input(argv) == 1)
@@ -72,7 +73,7 @@ void	init_philos(t_struct *data)
 	}
 }
 
-/*create threads, assign routine to each philo, join threads*/
+//create threads, assign routine to each philo, join threads
 int	run_threads(t_struct *data)
 {
 	int	i;
@@ -98,6 +99,7 @@ int	run_threads(t_struct *data)
 	return (0);
 }
 
+//case of total_philo=1, run one_routine
 int	run_one_thread(t_struct *data)
 {
 	if (pthread_create(&data->threads[0], NULL, &one_routine, \

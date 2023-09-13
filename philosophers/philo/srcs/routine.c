@@ -6,16 +6,13 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:28:55 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:40:18 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:54:28 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-/*in order to be passed to pthread_create, this function
-needs to return a (void *) and can only take a (void *)
-argument which can then be typecasted to what we are passing*/
-
+//all you can eat
 void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock((philo->l_fork));
@@ -38,6 +35,7 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_unlock((philo->r_fork));
 }
 
+//sleep tight
 void	philo_sleep(t_philo *philo)
 {
 	if (check_if_dead(philo) != 0)
@@ -46,6 +44,7 @@ void	philo_sleep(t_philo *philo)
 	ft_usleep(philo->data->time_to_sleep, philo->data);
 }
 
+//think deeply
 void	philo_think(t_philo *philo)
 {
 	if (check_if_dead(philo) != 0)
@@ -53,6 +52,8 @@ void	philo_think(t_philo *philo)
 	print_msg(THINK, philo);
 }
 
+/*normal philo routine: handle errors, total_meals,
+deaths + eat, sleep, think, repeat*/
 void	*routine(void *p)
 {
 	t_philo	*philo;
@@ -82,6 +83,7 @@ void	*routine(void *p)
 	return ((void *)0);
 }
 
+//routine in case total_philo=1
 void	*one_routine(void *p)
 {
 	t_philo	*philo;

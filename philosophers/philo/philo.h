@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:13:00 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:42:02 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/13 17:58:02 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,21 @@
 # define EAT "is eating"
 # define DIE "died"
 # define FINISH "All philosphers finished their meals"
-# define FINISH_ZERO "The philosophers did not eat since the max amount of meals is 0"
-# define ONLY_ONE "The lonely philospher died a tragic death because there was only one fork"
+# define FINISH_ZERO "The philosophers did not eat since \
+the max amount of meals is 0"
+# define ONLY_ONE "The lonely philospher died a tragic death \
+because there was only one fork"
 //alloc error
 # define ALLOC_ERR "Allocation error"
 //input error
-# define INPUT_ERR "Please enter between 4 and 5 valid input parameters: ./philo [nr of philosophers] \
+# define INPUT_ERR "Please enter between 4 and 5 valid input \
+parameters: ./philo [nr of philosophers] \
 [time to die] [time to eat] [time to sleep] \
 [*optional: nr of times a philospher must eat]"
-# define INPUT_FORMAT "Please enter positive integers (without any signs) as input parameters"
-# define INPUT_PHILO "Please enter between 1 and 200 as a first parameter"
+# define INPUT_FORMAT "Please enter positive integers (without\
+ any signs) as input parameters"
+# define INPUT_PHILO "Please enter between 1 and 200 as a first\
+ parameter"
 //thread error
 # define CREATE_ERR "Pthread_create() error"
 # define JOIN_ERR "Pthread_join() error"
@@ -73,10 +78,10 @@ typedef struct s_struct
 }	t_struct;
 
 /*	utils_1.c	*/
-int		error_msg(char *str, t_struct *data);
-int		get_current_time(t_struct *data);
-void	clear_all(t_struct *data);
 void	print_msg(char *str, t_philo *philo);
+int		error_msg(char *str, t_struct *data);
+void	clear_all(t_struct *data);
+int		get_current_time(t_struct *data);
 int		ft_usleep(int milli_sleep, t_struct *data);
 
 /*	utils_2.c	*/
