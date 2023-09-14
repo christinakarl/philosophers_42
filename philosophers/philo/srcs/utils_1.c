@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 16:23:41 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:56:37 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/14 15:06:07 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,10 @@ int	ft_usleep(int milli_sleep, t_struct *data)
 		return (0);
 	start = get_current_time(data);
 	while ((get_current_time(data) - start) < (milli_sleep))
+	{
+		if (data->stop != 0)
+			break;
 		usleep(500);
+	}
 	return (0);
 }

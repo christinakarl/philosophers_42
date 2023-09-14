@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:28:55 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:54:28 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/14 15:08:03 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ void	philo_eat(t_philo *philo)
 //sleep tight
 void	philo_sleep(t_philo *philo)
 {
-	if (check_if_dead(philo) != 0)
-		return ;
-	print_msg(SLEEP, philo);
-	ft_usleep(philo->data->time_to_sleep, philo->data);
+	while (check_if_dead(philo) == 0)
+	{
+		print_msg(SLEEP, philo);
+		ft_usleep(philo->data->time_to_sleep, philo->data);
+		// break ;
+	}
 }
 
 //think deeply

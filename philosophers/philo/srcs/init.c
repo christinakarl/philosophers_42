@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:42:37 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:54:26 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/14 15:04:25 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	run_threads(t_struct *data)
 		if (pthread_create(&data->threads[i], NULL, &routine, \
 			&data->philo[i]) != 0)
 			return (error_msg(CREATE_ERR, data));
+		usleep(100);
 	}
 	i = -1;
 	while (++i < data->total_philo)
