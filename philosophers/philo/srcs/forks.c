@@ -6,51 +6,13 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 13:44:01 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 14:56:49 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/15 18:12:02 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	monitor_philos(t_struct *data)
-{
-	int	i;
-
-	while (1)
-	{
-		i = -1;
-		while (++i < data->total_philo)
-		{
-			if (check_if_dead_while_fork(&data->philo[i]) != 0)
-				break ;
-		}
-	}
-}
-
-int	check_if_dead_while_fork(t_philo *philo)
-{
-	while (check_eat(philo) == 0)
-	{
-		if ((get_current_time(philo->data) - philo->last_meal \
-			>= philo->data->time_to_die))
-		{
-			print_msg(DIE, philo);
-			if (philo->l_taken == 1)
-			{
-				pthread_mutex_unlock((philo->l_fork));
-				philo->l_taken = 1;
-			}
-			if (philo->r_taken == 1)
-			{
-				pthread_mutex_unlock((philo->r_fork));
-				philo->r_taken = 0;
-			}
-			return (1);
-		}
-	}
-	return (0);
-}
-
+//taking both forks if philo didn't die before
 int	take_fork(t_philo *philo)
 {
 	if (check_stop(philo->data) == 0)
@@ -71,4 +33,23 @@ int	take_fork(t_philo *philo)
 		}
 	}
 	return (1);
+}
+
+//check if philo is currently eating
+int	check_eat(t_philo *philo)
+{
+	int	value;
+
+	pthread_mutex_lock(&(philo->eat_lock));
+	value = philo->is_eating;
+	pthread_mutex_unlock(&(philo->eat_lock));
+	return (value);
+}
+
+//indicate if philo is eating (1) or has finished eating (0)
+void	change_eat(t_philo *philo, int index)
+{
+	pthread_mutex_lock(&(philo->eat_lock));
+	philo->is_eating = index;
+	pthread_mutex_unlock(&(philo->eat_lock));
 }

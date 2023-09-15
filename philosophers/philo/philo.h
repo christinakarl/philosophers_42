@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:13:00 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 13:52:32 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/15 18:08:27 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_philo
 	int				is_eating;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	pthread_mutex_t	eat_lock;;
+	pthread_mutex_t	eat_lock;
 }	t_philo;
 
 typedef struct s_struct
@@ -118,7 +118,7 @@ void	*one_routine(void *p);
 
 /*	forks.c	*/
 void	monitor_philos(t_struct *data);
-int		check_if_dead_while_fork(t_philo *philo);
+int		check_if_dead_while_forking(t_philo *philo);
 int		take_fork(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:28:55 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 14:49:25 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/15 18:18:02 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 //all you can eat
 void	philo_eat(t_philo *philo)
 {
-	// pthread_mutex_lock((philo->l_fork));
-	// print_msg(TAKE_FORK, philo);
-	// if (check_if_dead(philo) != 0 || check_if_all_finished(philo) != 0)
-	// {
-	// 	pthread_mutex_unlock((philo->l_fork));
-	// 	return ;
-	// }
-	// pthread_mutex_lock((philo->r_fork));
-	// print_msg(TAKE_FORK, philo);
 	if (take_fork(philo) == 0)
 	{
 		philo->last_meal = get_current_time(philo->data);
@@ -31,10 +22,10 @@ void	philo_eat(t_philo *philo)
 		philo->meals_nbr += 1;
 		ft_usleep(philo->data->time_to_eat, philo);
 		change_eat(philo, 0);
-		pthread_mutex_unlock((philo->l_fork));
-		pthread_mutex_unlock((philo->r_fork));
 		philo->l_taken = 0;
 		philo->r_taken = 0;
+		pthread_mutex_unlock((philo->l_fork));
+		pthread_mutex_unlock((philo->r_fork));
 	}
 }
 
@@ -92,7 +83,10 @@ void	*one_routine(void *p)
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
+	pthread_mutex_lock((philo->r_fork));
+	print_msg(TAKE_FORK, philo);
+	pthread_mutex_unlock((philo->r_fork));
 	ft_usleep(philo->data->time_to_die, philo);
-	print_msg(ONLY_ONE, philo);
+	print_msg(DIE, philo);
 	return ((void *)0);
 }

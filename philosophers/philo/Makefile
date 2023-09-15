@@ -6,7 +6,7 @@
 #    By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 12:26:41 by ckarl             #+#    #+#              #
-#    Updated: 2023/09/15 12:01:44 by ckarl            ###   ########.fr        #
+#    Updated: 2023/09/15 18:05:21 by ckarl            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ UTILS_FILES	:=	init.c		\
 				routine.c	\
 				checks.c	\
 				forks.c		\
+				monitor.c	\
 
 	### OBJECTS ###
 UTILS_FILES := $(addprefix $(OBJS_PATH)/, $(UTILS_FILES:.c=.o))

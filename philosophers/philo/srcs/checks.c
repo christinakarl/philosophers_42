@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 14:51:54 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 12:43:08 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/15 18:11:23 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	check_if_all_finished(t_philo *philo)
 	return (0);
 }
 
+//check the stop value
 int	check_stop(t_struct *data)
 {
 	int	value;
@@ -70,26 +71,10 @@ int	check_stop(t_struct *data)
 	return (value);
 }
 
+//change the stop value (in case of death)
 void	change_stop(t_struct *data)
 {
 	pthread_mutex_lock(&(data->stop_lock));
 	data->stop = 1;
 	pthread_mutex_unlock(&(data->stop_lock));
-}
-
-int	check_eat(t_philo *philo)
-{
-	int	value;
-
-	pthread_mutex_lock(&(philo->eat_lock));
-	value = philo->is_eating;
-	pthread_mutex_unlock(&(philo->eat_lock));
-	return (value);
-}
-
-void	change_eat(t_philo *philo, int index)
-{
-	pthread_mutex_lock(&(philo->eat_lock));
-	philo->is_eating = index;
-	pthread_mutex_unlock(&(philo->eat_lock));
 }
