@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:13:00 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/13 17:58:02 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/15 13:52:32 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ parameters: ./philo [nr of philosophers] \
 //time error
 # define TIME_ERR "Could not retrieve time of day"
 
-struct s_struct;
+struct	s_struct;
 
 typedef struct s_philo
 {
@@ -55,8 +55,12 @@ typedef struct s_philo
 	int				id;
 	int				meals_nbr;
 	int				last_meal;
+	int				r_taken;
+	int				l_taken;
+	int				is_eating;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	eat_lock;;
 }	t_philo;
 
 typedef struct s_struct
@@ -82,7 +86,7 @@ void	print_msg(char *str, t_philo *philo);
 int		error_msg(char *str, t_struct *data);
 void	clear_all(t_struct *data);
 int		get_current_time(t_struct *data);
-int		ft_usleep(int milli_sleep, t_struct *data);
+int		ft_usleep(int milli_sleep, t_philo *philo);
 
 /*	utils_2.c	*/
 int		ft_atoi(const char *str);
@@ -93,6 +97,10 @@ int		ft_strcmp(char *str, char *comp);
 int		check_input(char **argv);
 int		check_if_dead(t_philo *philo);
 int		check_if_all_finished(t_philo *philo);
+int		check_stop(t_struct *data);
+void	change_stop(t_struct *data);
+int		check_eat(t_philo *philo);
+void	change_eat(t_philo *philo, int index);
 
 /*	init.c	*/
 int		init_data(t_struct *data, int argc, char **argv);
@@ -107,5 +115,10 @@ void	philo_sleep(t_philo *philo);
 void	philo_think(t_philo *philo);
 void	*routine(void *p);
 void	*one_routine(void *p);
+
+/*	forks.c	*/
+void	monitor_philos(t_struct *data);
+int		check_if_dead_while_fork(t_philo *philo);
+int		take_fork(t_philo *philo);
 
 #endif

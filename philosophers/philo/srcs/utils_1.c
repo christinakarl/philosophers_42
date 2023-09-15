@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 16:23:41 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/14 15:06:07 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/15 12:54:27 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,21 @@ void	print_msg(char *str, t_philo *philo)
 
 	pthread_mutex_lock(&(philo->data->write_lock));
 	time = get_current_time(philo->data) - philo->data->start_time;
-	if (philo->data->stop == 0)
+	if (check_stop(philo->data) == 0)
 	{
 		if (ft_strcmp(str, DIE) == 0)
 		{
-			pthread_mutex_lock(&(philo->data->stop_lock));
-			philo->data->stop = 1;
-			printf("%d: Philospher %d %s\n", time, philo->id, str);
-			pthread_mutex_unlock(&(philo->data->stop_lock));
+			change_stop(philo->data);
+			printf("%d: Philosopher %d %s\n", time, philo->id, str);
 		}
 		else if (ft_strcmp(str, FINISH) == 0 || \
 				ft_strcmp(str, ONLY_ONE) == 0)
 		{
-			pthread_mutex_lock(&(philo->data->stop_lock));
-			philo->data->stop = 1;
+			change_stop(philo->data);
 			printf("%d: %s\n", time, str);
-			pthread_mutex_unlock(&(philo->data->stop_lock));
 		}
 		else
-			printf("%d: Philospher %d %s\n", time, philo->id, str);
+			printf("%d: Philosopher %d %s\n", time, philo->id, str);
 	}
 	pthread_mutex_unlock(&(philo->data->write_lock));
 }
@@ -63,7 +59,10 @@ void	clear_all(t_struct *data)
 	if (data)
 	{
 		while (++i < data->total_philo)
+		{
 			pthread_mutex_destroy(&data->forks[i]);
+			pthread_mutex_destroy(&(data->philo[i].eat_lock));
+		}
 		if (data->philo)
 			free(data->philo);
 		if (data->threads)
@@ -91,17 +90,18 @@ granularity (minimum sleep time that can be handled effectively, usually
 in milliseconds) and function call overhead (set up & tear down of the
 function)
 >> useconds_t = microseconds = 1000 * milliseconds*/
-int	ft_usleep(int milli_sleep, t_struct *data)
+int	ft_usleep(int milli_sleep, t_philo *philo)
 {
 	int	start;
 
 	if (milli_sleep == 0)
 		return (0);
-	start = get_current_time(data);
-	while ((get_current_time(data) - start) < (milli_sleep))
+	start = get_current_time(philo->data);
+	while ((get_current_time(philo->data) - start) < (milli_sleep))
 	{
-		if (data->stop != 0)
-			break;
+		if ((get_current_time(philo->data) - philo->last_meal \
+		>= philo->data->time_to_die))
+			break ;
 		usleep(500);
 	}
 	return (0);
