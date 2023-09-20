@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:13:00 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 18:08:27 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/20 12:14:02 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_philo
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	eat_lock;
+	pthread_mutex_t	lm_lock;
 }	t_philo;
 
 typedef struct s_struct
@@ -99,8 +100,6 @@ int		check_if_dead(t_philo *philo);
 int		check_if_all_finished(t_philo *philo);
 int		check_stop(t_struct *data);
 void	change_stop(t_struct *data);
-int		check_eat(t_philo *philo);
-void	change_eat(t_philo *philo, int index);
 
 /*	init.c	*/
 int		init_data(t_struct *data, int argc, char **argv);
@@ -117,8 +116,14 @@ void	*routine(void *p);
 void	*one_routine(void *p);
 
 /*	forks.c	*/
+int		take_fork(t_philo *philo);
+int		check_eat(t_philo *philo);
+void	change_eat(t_philo *philo, int index);
+
+/*	monitor.c	*/
 void	monitor_philos(t_struct *data);
 int		check_if_dead_while_forking(t_philo *philo);
-int		take_fork(t_philo *philo);
+int		check_lastmeal(t_philo *philo);
+void	change_lastmeal(t_philo *philo);
 
 #endif

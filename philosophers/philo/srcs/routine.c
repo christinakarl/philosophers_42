@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:28:55 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 18:18:02 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/20 12:15:17 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	philo_eat(t_philo *philo)
 {
 	if (take_fork(philo) == 0)
 	{
-		philo->last_meal = get_current_time(philo->data);
+		// lock lastmeal
+		change_lastmeal(philo);
+		// unlock lastmeal
 		print_msg(EAT, philo);
 		philo->meals_nbr += 1;
 		ft_usleep(philo->data->time_to_eat, philo);

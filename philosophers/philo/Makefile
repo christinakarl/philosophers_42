@@ -6,13 +6,13 @@
 #    By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/05 12:26:41 by ckarl             #+#    #+#              #
-#    Updated: 2023/09/15 18:05:21 by ckarl            ###   ########.fr        #
+#    Updated: 2023/09/20 12:15:29 by ckarl            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 	### COMPILATION ###
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror #-fsanitize=address #-g3
+CFLAGS		:=	-Wall -Wextra -Werror -fsanitize=thread -g3
 
 	### EXECUTABLE ###
 NAME		:=	philo

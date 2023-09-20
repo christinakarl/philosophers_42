@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 16:23:41 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 18:09:06 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/20 12:10:30 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	clear_all(t_struct *data)
 		{
 			pthread_mutex_destroy(&data->forks[i]);
 			pthread_mutex_destroy(&(data->philo[i].eat_lock));
+			pthread_mutex_destroy(&(data->philo[i].lm_lock));
 		}
 		if (data->philo)
 			free(data->philo);

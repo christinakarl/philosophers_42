@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:02:06 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 18:03:43 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/20 12:23:55 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,39 @@ void	monitor_philos(t_struct *data)
 	}
 }
 
-//monitor check that changes the stop value if one dies
+//monitor check that changes the stop value if a philo dies
 int	check_if_dead_while_forking(t_philo *philo)
 {
 	while (check_eat(philo) == 0)
 	{
-		if ((get_current_time(philo->data) - philo->last_meal \
+		if ((get_current_time(philo->data) - check_lastmeal(philo) \
 			>= philo->data->time_to_die))
 		{
 			print_msg(DIE, philo);
-			if (philo->l_taken == 1)
-			{
-				pthread_mutex_unlock((philo->l_fork));
-				philo->l_taken = 0;
-			}
-			if (philo->r_taken == 1)
-			{
-				pthread_mutex_unlock((philo->r_fork));
-				philo->r_taken = 0;
-			}
+			pthread_mutex_unlock((philo->l_fork));
+			pthread_mutex_unlock((philo->r_fork));
 			return (1);
 		}
 	}
 	return (0);
+}
+
+
+//check when the last meal was
+int	check_lastmeal(t_philo *philo)
+{
+	int	value;
+
+	pthread_mutex_lock(&(philo->lm_lock));
+	value = philo->last_meal;
+	pthread_mutex_unlock(&(philo->lm_lock));
+	return (value);
+}
+
+//change the last meal time to current (while eating)
+void	change_lastmeal(t_philo *philo)
+{
+	pthread_mutex_lock(&(philo->lm_lock));
+	philo->last_meal = get_current_time(philo->data);
+	pthread_mutex_unlock(&(philo->lm_lock));
 }

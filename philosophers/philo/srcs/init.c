@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:42:37 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/15 14:57:21 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/20 12:10:08 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	init_philos(t_struct *data)
 		data->philo[i].r_taken = 0;
 		data->philo[i].is_eating = 0;
 		pthread_mutex_init(&data->philo[i].eat_lock, NULL);
+		pthread_mutex_init(&data->philo[i].lm_lock, NULL);
 		data->philo[i].r_fork = &data->forks[i];
 		if (i == 0)
 			data->philo[i].l_fork = &data->forks[data->total_philo - 1];
