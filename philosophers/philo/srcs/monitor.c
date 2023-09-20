@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:02:06 by ckarl             #+#    #+#             */
-/*   Updated: 2023/09/20 12:23:55 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/09/20 13:34:55 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	check_if_dead_while_forking(t_philo *philo)
 	}
 	return (0);
 }
-
 
 //check when the last meal was
 int	check_lastmeal(t_philo *philo)
