@@ -7,6 +7,9 @@
 *.obj
 *.elf
 
+# vs code
+.vscode/
+
 # Linker output
 *.ilk
 *.map
@@ -36,6 +39,8 @@
 *.x86_64
 *.hex
 
+philo
+
 # Debug files
 *.dSYM/
 *.su
@@ -47,6 +52,8 @@
 *.cmd
 .tmp_versions/
 modules.order
+objs/
+objs
 Module.symvers
 Mkfile.old
 dkms.conf
